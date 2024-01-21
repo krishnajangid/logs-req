@@ -1,0 +1,30 @@
+name: Docker Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: |
+          docker build -t your-image-name:${{ github.sha }} .
+          docker tag your-image-name:${{ github.sha }} your-image-name:latest
+        env:
+          DOCKER_BUILDKIT: 1
+
+      - name: Create Sample File
+        run: |
+          echo "This is a sample file created during the GitHub Actions workflow." > sample-file.txt
+
+      - name: Display Sample File Content
+        run: |
+          cat sample-file.txt
+
